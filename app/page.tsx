@@ -4,12 +4,14 @@ import { useState } from "react";
 
 export default function Home() {
   const [nama, setNama] = useState("");
+  const [blok, setBlok] = useState("");
+  const [nomorBlok, setNomorBlok] = useState("");
   const [shareLocation, setShareLocation] = useState("");
   const [estimasiLuas, setEstimasiLuas] = useState("");
   const [status, setStatus] = useState<{ message: string; type: "success" | "error" | "loading" } | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0D7NZ88YFdqs4HN4GtIr4Sa5gGDL0orutZuI4acGOMMR-ggL1XQoUBm1sklURx6T6/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvE0tCyKXAOl3ft-hhvdCFD7Zu4SVCGA905W1teCYow5unaMx1YnZU2AoWi-RD5cMN/exec";
 
   const submitData = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,6 +20,16 @@ export default function Home() {
 
     if (!nama.trim()) {
       setStatus({ message: "Mohon isi nama", type: "error" });
+      return;
+    }
+
+    if (!blok.trim()) {
+      setStatus({ message: "Mohon isi blok", type: "error" });
+      return;
+    }
+
+    if (!nomorBlok.trim()) {
+      setStatus({ message: "Mohon isi nomor blok", type: "error" });
       return;
     }
 
@@ -51,6 +63,18 @@ export default function Home() {
     inputNama.value = nama;
     form.appendChild(inputNama);
 
+    const inputBlok = document.createElement("input");
+    inputBlok.type = "hidden";
+    inputBlok.name = "blok";
+    inputBlok.value = blok;
+    form.appendChild(inputBlok);
+
+    const inputNomorBlok = document.createElement("input");
+    inputNomorBlok.type = "hidden";
+    inputNomorBlok.name = "nomorBlok";
+    inputNomorBlok.value = nomorBlok;
+    form.appendChild(inputNomorBlok);
+
     const inputMaps = document.createElement("input");
     inputMaps.type = "hidden";
     inputMaps.name = "mapsUrl";
@@ -77,6 +101,8 @@ export default function Home() {
         cleanup();
         setStatus({ message: "✓ Data berhasil dikirim!", type: "success" });
         setNama("");
+        setBlok("");
+        setNomorBlok("");
         setShareLocation("");
         setEstimasiLuas("");
         setSubmitting(false);
@@ -105,6 +131,32 @@ export default function Home() {
               value={nama}
               onChange={(e) => setNama(e.target.value)}
               placeholder="Input nama"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="blok">Blok</label>
+            <input
+              type="text"
+              id="blok"
+              name="blok"
+              value={blok}
+              onChange={(e) => setBlok(e.target.value)}
+              placeholder="Contoh: A / B / C"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="nomorBlok">Nomor Blok</label>
+            <input
+              type="text"
+              id="nomorBlok"
+              name="nomorBlok"
+              value={nomorBlok}
+              onChange={(e) => setNomorBlok(e.target.value)}
+              placeholder="Contoh: 01"
               required
             />
           </div>
